@@ -27,6 +27,7 @@ file = file_case5acdc
 data = PowerModels.parse_file(file)
 
 PowerModelsACDC.process_additional_data!(data)
+
 ipopt = JuMP.with_optimizer(Ipopt.Optimizer, tol=1e-6, print_level=0)
 mosek = JuMP.with_optimizer(Mosek.Optimizer)
 scs = JuMP.with_optimizer(SCS.Optimizer)
@@ -36,6 +37,8 @@ gurobi = JuMP.with_optimizer(Gurobi.Optimizer, Presolve=0)
 s = Dict("output" => Dict("branch_flows" => true), "conv_losses_mp" => true)
 
 resultAC = run_acdcopf(file, ACPPowerModel, ipopt; setting = s)
+
+resultLPAC = run_acdcopf(file, LPACCPowerModel, ipopt; setting = s)
 
 resultQC = run_acdcopf(file, QCRMPowerModel, ipopt; setting = s)
 # # #
